@@ -1,0 +1,20 @@
+#!/bin/sh
+PREBUILT=/usr/local/android-ndk-r7/toolchains/arm-linux-androideabi-4.4.3/prebuilt/linux-x86
+PLATFORM=/usr/local/android-ndk-r7/platforms/android-4/arch-arm
+./configure --target-os=linux \
+--arch=armv41 \
+--enable-cross-compile \
+--cc=$PREBUILT/bin/arm-linux-androideabi-gcc \
+--cross-prefix=$PREBUILT/bin/arm-linux-androideabi- \
+--nm=$PREBUILT/bin/arm-linux-androideabi-nm \
+--extra-cflags="-fPIC -DANDROID" \
+--enable-static \
+--disable-shared \
+--disable-asm \
+--disable-yasm \
+--prefix=/home/ffmpeg-android-bin \
+--extra-ldflags="-Wl,-T,$PREBUILT/arm-linux-androideabi/lib/ldscripts/armelf_linux_eabi.x -Wl,\
+-rpath-link=$PLATFORM/usr/lib \
+-L$PLATFORM/usr/lib -nostdlib \
+$PREBUILT/lib/gcc/arm-linux-androideabi/4.4.3/crtbegin.o \
+$PREBUILT/lib/gcc/arm-linux-androideabi/4.4.3/crtend.o -lc -lm -ldl"
